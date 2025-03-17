@@ -46,5 +46,6 @@ def get_cats_info(path):
     except Exception as e:
         return f"An unexpected error occurred while reading '{file_path}': {e}"
 
-cats_info = get_cats_info("/Users/yurii/PycharmProjects/goit-algo-hw-04/Second_task/cats.txt")
-print(cats_info)
+# TEST
+# cats_info = get_cats_info("/Users/yurii/PycharmProjects/goit-algo-hw-04/Second_task/cats.txt")
+# print(cats_info)
