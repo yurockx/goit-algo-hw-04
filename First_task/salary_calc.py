@@ -6,7 +6,7 @@ def total_salary(path):
     file_path = pathlib.Path(path)
     #checking the_file integrity_and_availability
     if not file_path.exists():
-        return f"Error: File '{file_path}' does not exist."
+        return f"Error: File '{file_path}' does not exist or the path is wrong."
     if not file_path.is_file():
         return f"Error: '{file_path}' is not a file."
     if not os.access(file_path, os.R_OK):
@@ -34,8 +34,8 @@ def total_salary(path):
         return "Unicode error - the file is not valid"
     except ValueError:
         print(f"Error: Invalid file path format: '{file_path}'")
-    except Exception as e:
-        return f"Unknown error occurred: {e}."
+    # except Exception as e:
+    #     return f"Unknown error occurred: {e}."
 
 #TEST
 # result = total_salary("/Users/yurii/PycharmProjects/goit-algo-hw-04/First_task/employees_list.txt")
