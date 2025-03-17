@@ -34,8 +34,8 @@ def total_salary(path):
         return "Unicode error - the file is not valid"
     except ValueError:
         print(f"Error: Invalid file path format: '{file_path}'")
-    # except Exception as e:
-    #     return f"Unknown error occurred: {e}."
+    except Exception as e:
+        return f"Unknown error occurred: {e}."
 
 #TEST
 # result = total_salary("/Users/yurii/PycharmProjects/goit-algo-hw-04/First_task/employees_list.txt")
