@@ -2,8 +2,16 @@ import pathlib
 import os
 
 def get_cats_info(path):
+    # Reads information about cats from a txt file and returns a list of dictionaries.
+    # Each line in the file is expected to be in the format: id,name,age.
+    # Args:
+    #     path (str): The path to the txt file.
+    # Returns:
+    #     list[dict]: A list of dictionaries, where each dictionary represents a cat
+    #                  and has keys 'id', 'name', and 'age'.
     file_path = pathlib.Path(path)
-    # checking the_file integrity_and_availability
+
+    # Check file integrity and availability
     if not file_path.exists():
         return f"Error: File '{file_path}' does not exist or the path is wrong."
     if not file_path.is_file():
@@ -11,31 +19,32 @@ def get_cats_info(path):
     if not os.access(file_path, os.R_OK):
         return f"Error: File '{file_path}' is not readable."
     if file_path.stat().st_size == 0:
-        return f"Error: File '{file_path}' File is empty."
+        return f"Error: File '{file_path}' is empty."
 
+    list_cats_dics = []
     try:
-        with open(file_path, "r", encoding="utf-8") as file:
-            lines = file.read().splitlines()
-            list_cats_dics = []
-            for line in lines:
-                parts = line.split(',')
-                dict = {}
-                id = parts[0]
-                name = parts[1]
-                age = parts[2]
-                dict.update({"id": id, "name": name, "age": age})
-                list_cats_dics.append(dict)
+        with file_path.open("r", encoding="utf-8") as file:
+            for line_number, line in enumerate(file, 1):
+                parts = line.strip().split(',')
+                if len(parts) != 3:
+                    return f"Error: Invalid data format on line {line_number} in '{file_path}'. Expected 'id,name,age'."
+                cat_id, name, age_str = parts
 
-            return list_cats_dics
+                if not cat_id.strip():
+                    return f"Error: 'id' cannot be empty on line {line_number} in '{file_path}'."
+                if not name.strip():
+                    return f"Error: 'name' cannot be empty on line {line_number} in '{file_path}'."
+                if not age_str.strip().isdigit():
+                    return f"Error: 'age' must be a number on line {line_number} in '{file_path}'."
+
+                list_cats_dics.append({"id": cat_id.strip(), "name": name.strip(), "age": int(age_str.strip())})
+
+        return list_cats_dics
 
     except UnicodeDecodeError:
-        return "Unicode error - the file is not valid"
-    except ValueError:
-        print(f"Error: Invalid file path format: '{file_path}'")
-    except IndexError:
-        return f"Error: Index is out of range for the list. Please check the file {file_path} contains all necessary details."
-    except Exception as e:  # Catch other potential errors
-        return f"An unexpected error occurred: {e}"
+        return "Error: The file is not a valid UTF-8 encoded text file."
+    except Exception as e:
+        return f"An unexpected error occurred while reading '{file_path}': {e}"
 
 cats_info = get_cats_info("/Users/yurii/PycharmProjects/goit-algo-hw-04/Second_task/cats.txt")
 print(cats_info)
