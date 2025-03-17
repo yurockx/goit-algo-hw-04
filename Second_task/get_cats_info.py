@@ -2,7 +2,7 @@ import pathlib
 import os
 
 def get_cats_info(path):
-    # Reads information about cats from a txt file and returns a list of dictionaries.
+    # Reads information about cats:) from a txt file and returns a list of dictionaries.
     # Each line in the file is expected to be in the format: id,name,age.
     # Args:
     #     path (str): The path to the txt file.
@@ -42,7 +42,7 @@ def get_cats_info(path):
         return list_cats_dics
 
     except UnicodeDecodeError:
-        return "Error: The file is not a valid UTF-8 encoded text file."
+        return f"Error: The file '{file_path}' is not a valid UTF-8 encoded text file."
     except Exception as e:
         return f"An unexpected error occurred while reading '{file_path}': {e}"
 

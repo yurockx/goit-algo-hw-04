@@ -1,7 +1,7 @@
 import pathlib
 import os
 
-# Function to calculate total and average amount of salary from the file
+# Function to calculate total and average amount of salary from a txt file
 def total_salary(path):
     file_path = pathlib.Path(path)
     #checking the_file integrity_and_availability
