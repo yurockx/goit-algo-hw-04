@@ -1,51 +1,47 @@
 def parse_input(user_input):
-    cmd, *args = user_input.split()
-    cmd = cmd.strip().lower()
+    #Parses user input into command and arguments.
+    parts = user_input.split()
+    if not parts: #empty command check
+        return "", []
+    cmd = parts[0].strip().lower()
+    args = parts[1:]
     return cmd, args
 
 def add_contact(args, contacts):
+    #Adds a contact to the contacts dictionary.
     if len(args) != 2:
         return "Invalid arguments. Please provide only name and phone."
-    name = args[0]
+    name, phone = args
     if name in contacts:
-        return f"The {name}'s contact is already exists please try another name"
-    else:
-        name, phone = args
-        contacts[name] = phone
-        return "Contact added."
+        return f"The {name}'s contact already exists. Please use a different name."
+    contacts[name] = phone
+    return "Contact added."
 
 def find_contact(args, contacts):
+    #Finds a contact's phone number by name.
     if len(args) != 1:
         return "Invalid arguments. Please provide only name to find the phone number."
     name = args[0]
-    if name in contacts:
-        return f"{name}'s number us {contacts[name]}"
-    else:
-        return f"{name}'s number wasn't found"
-    
+    return contacts.get(name, f"{name}'s number wasn't found.")
+
 def update_contact(args, contacts):
+    #Updates a contact's phone number.
     if len(args) != 2:
         return "Invalid arguments. Please provide name and phone."
-    name = args[0]
-    new_number = args[1]
+    name, new_number = args
     if name in contacts:
         contacts[name] = new_number
-        return "Contact updated"
-    else:
-        return f"{name} was't found"
+        return "Contact updated."
+    return f"{name} wasn't found."
 
-def show_all(contacts, all_contacts):
-    if len(contacts) >= 1:
-        for contact in contacts:
-            all_contacts += str(f"Name: {contact}, number: {contacts[contact]}") + "\n"
-        return all_contacts.rstrip('\n') #remove the last new line.
-    else:
-        return "No contacts have been added yet"
-
-
-
+def show_all(contacts):
+    #Displays all contacts from dic.
+    if not contacts:
+        return "No contacts have been added yet."
+    return "\n".join(f"Name: {name}, number: {number}" for name, number in contacts.items())
 
 def main():
+    #Main function.
     contacts = {}
     print("""
             _____             .___    .__              _____   
@@ -62,19 +58,17 @@ def main():
         \/         \/                                 
           
     """)
-    print("Welcome to the assistant bot!")
-    print("""
-Please use the following commands:
-1. Hello
-2. Add
-3. Phone
-4. Update
-5. All
-6. Close or Exit
-""")
+    print("Welcome to the assistant bot!\n"
+          "Please use the following commands:\n"
+          "1. Hello\n"
+          "2. Add\n"
+          "3. Phone\n"
+          "4. Update\n"
+          "5. All\n"
+          "6. Close or Exit\n")
+
     while True:
         user_input = input("Enter a command: ")
-        all_contacts = ""
         command, args = parse_input(user_input)
 
         if command in ["close", "exit"]:
@@ -87,13 +81,9 @@ Please use the following commands:
         elif command == "phone":
             print(find_contact(args, contacts))
         elif command == "update":
-            if update_contact(args,contacts):
-                print(update_contact(args, contacts))
-            else:
-                print("")
-            
+            print(update_contact(args, contacts))
         elif command == "all":
-            print(show_all(contacts, all_contacts))
+            print(show_all(contacts))
         else:
             print("Invalid command.")
 
